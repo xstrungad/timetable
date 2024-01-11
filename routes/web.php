@@ -18,4 +18,6 @@ Route::get('/welcome', function () {
 });
 Route::get('/', function () {
     return view('index');
-});
+})->name('navHome');
+
+Route::get('/teachers', [App\Http\Controllers\TeacherController::class, 'index'])->name('teachers.index');
