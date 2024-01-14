@@ -2,21 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Subject;
+use App\Models\Action;
 use Illuminate\Http\Request;
 
-class SubjectController extends Controller
+class ActionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //$subjects = Subject::orderBy('id', 'desc')->get();
-        //$subjects = Subject::orderBy('id', 'desc')->paginate(20);
-        $subjects = Subject::withTrashed()->with('teacher')->orderBy('id', 'desc')->paginate(20);
-
-        return view('subjects.index')->with('subjects', $subjects);
+        //
     }
 
     /**
@@ -38,7 +34,7 @@ class SubjectController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Subject $subject)
+    public function show(Action $action)
     {
         //
     }
@@ -46,7 +42,7 @@ class SubjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Subject $subject)
+    public function edit(Action $action)
     {
         //
     }
@@ -54,7 +50,7 @@ class SubjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Subject $subject)
+    public function update(Request $request, Action $action)
     {
         //
     }
@@ -62,7 +58,7 @@ class SubjectController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Subject $subject)
+    public function destroy(Action $action)
     {
         //
     }

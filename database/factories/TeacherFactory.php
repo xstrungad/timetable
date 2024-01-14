@@ -17,9 +17,9 @@ class TeacherFactory extends Factory
     public function definition(): array
     {
         return [
-            'firstname' => fake()->firstName(),
-            'lastname' => fake()->lastName(),
-            'email' => fake()->email(),
+            'firstname' => fake()->firstName($maxNbChars = 15),
+            'lastname' => fake()->lastName($maxNbChars = 20),
+            'email' => fake()->email($maxNbChars = 20),
             'phone_number' => fake()->phoneNumber(),
         ];
     }

@@ -5,20 +5,21 @@
         <thead>
             <tr>
                 <th>id</th>
-                <th>firstname</th>
-                <th>lastname</th>
-                <th>email</th>
-                <th>phone number</th>
+                <th>name</th>
+                <th>short_name</th>
+                <th>teacher</th>
             </tr>
         </thead>
         </tbody>
-            @foreach ($subjects as $subject)
-            <tr>
-                <td>{{$subject->id}}</td>
-                <td>{{$subject->firstname}}</td>
-                <td>{{$subject->lastname}}</td>
-                <td>{{$subject->email}}</td>
-                <td>{{$subject->phone_number}}</td>
+            @foreach ($subjects as $d)
+            <tr @if($d->trashed())class="table-danger"@endif>
+                <td>{{$d->id}}</td>
+                <td>{{$d->name}}</td>
+                <td>{{$d->short_name}}</td>
+                <td>{{$d->teacher->teacher_full_name_reverse}}</td>
+                @if($d->trashed())
+                <td></td>
+                @endif
             </tr>
             @endforeach
         </tbody>    
