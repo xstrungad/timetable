@@ -46,6 +46,9 @@
                 </div>
             </nav>
             <!-- Header-->
+            <div class="container">
+                @include('layouts.errors')
+            </div>
             @yield('content')
         </main>
         <!-- Footer-->

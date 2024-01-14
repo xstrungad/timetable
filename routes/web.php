@@ -16,8 +16,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('/welcome', function () {
     return view('welcome');
 });
-Route::get('/', function () {
+//Route::get('/', function () {
+//    return view('index');
+//})->name('navHome');
+Route::get('/', [App\Http\Controllers\TeacherController::class, 'index'])->name('teachers.index');
+
+Route::get('/index', function () {
     return view('index');
 })->name('navHome');
 
+// Teacher routes
 Route::get('/teachers', [App\Http\Controllers\TeacherController::class, 'index'])->name('teachers.index');
+Route::resource('/teachers', App\Http\Controllers\TeacherController::class);
+
+// Subject routes
+Route::get('/subjects', [App\Http\Controllers\SubjectController::class, 'index'])->name('subjects.index');
+Route::resource('/subjects', App\Http\Controllers\SubjectController::class);

@@ -12,16 +12,13 @@
             </tr>
         </thead>
         </tbody>
-            @foreach ($teachers as $d)
-            <tr @if($d->trashed())class="table-danger"@endif>
-                <td>{{$d->id}}</td>
-                <td>{{$d->firstname}}</td>
-                <td>{{$d->lastname}}</td>
-                <td>{{$d->email}}</td>
-                <td>{{$d->phone_number}}</td>
-                @if($d->trashed())
-                <td></td>
-                @endif
+            @foreach ($subjects as $subject)
+            <tr>
+                <td>{{$subject->id}}</td>
+                <td>{{$subject->firstname}}</td>
+                <td>{{$subject->lastname}}</td>
+                <td>{{$subject->email}}</td>
+                <td>{{$subject->phone_number}}</td>
             </tr>
             @endforeach
         </tbody>    
