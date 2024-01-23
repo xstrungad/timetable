@@ -13,11 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/welcome', function () {
-    return view('welcome');
+Route::get('/', function () {
+    return view('index');
 });
 Route::get('/', function () {
     return view('index');
 })->name('navHome');
 
-Route::get('/teachers', [App\Http\Controllers\TeacherController::class, 'index'])->name('teachers.index');
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::middleware(['auth'])->group(function () { 
+
+    Route::get('/teachers', [App\Http\Controllers\TeacherController::class, 'index'])->name('teachers.index');
+});
