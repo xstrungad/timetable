@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Teacher;
+use Exception;
 
 class TeacherController extends Controller
 {
@@ -12,8 +13,8 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        $teachers = Teacher::all();
-        //$teachers = Teacher::orderBy('lastname', 'ASC')->get(); 
+        //$teachers = Teacher::all();
+        $teachers = Teacher::orderBy('id', 'asc')->withTrashed()->get(); 
         //$teachers = Teacher::orderBy('lastname', 'ASC')->orderBy('firstname', 'ASC')->get(); 
         return view('teachers.index')->with('teachers', $teachers);
     }
@@ -23,7 +24,7 @@ class TeacherController extends Controller
      */
     public function create()
     {
-        //
+        return view('teachers.create');
     }
 
     /**
@@ -31,7 +32,29 @@ class TeacherController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'firstname'                 => 'required|string',
+            'lastname'                  => 'required|string',
+            'email'                     => 'required|string',
+            'phone_number'              => 'nullable|numeric',
+        ];
+
+        $validated = $request->validate($rules);
+        try {
+            $d = Teacher::create([
+            'firstname'                 => $request['firstname'],
+            'lastname'                  => $request['lastname'],
+            'email'                     => $request['email'],
+            'phone_number'              => $request['phone_number'],
+        ]);
+        session()->flash('success', 'Teacher record created');
+        return redirect()->route('teachers.index');
+
+        }catch (Exception $e) {
+            session()->flash('failure', $e->getMessage());
+            return redirect()->back()->withInput();
+        }  
+        
     }
 
     /**
@@ -47,7 +70,7 @@ class TeacherController extends Controller
      */
     public function edit(Teacher $teacher)
     {
-        //
+        return view('teachers.edit')->with('teacher', Teacher::find($teacher->id));
     }
 
     /**
@@ -55,7 +78,30 @@ class TeacherController extends Controller
      */
     public function update(Request $request, Teacher $teacher)
     {
-        //
+        $rules = [
+            'firstname'                 => 'required|string',
+            'lastname'                  => 'required|string',
+            'email'                     => 'required|email',
+            'phone_number'              => 'nullable|numeric',
+        ];
+
+        $validated = $request->validate($rules);
+
+        $d = Teacher::find($teacher->id);
+        $d->firstname          = $request->firstname;
+        $d->lastname           = $request->lastname;
+        $d->email              = $request->email;
+        $d->phone_number       = $request->phone_number;
+
+        try {
+            $d->save();
+            session()->flash('success', 'Teacher ' . $teacher->title . ' updated');
+            return redirect()->route('teachers.index');
+        } catch (Exception $e) {
+            session()->flash('failure', $e->getMessage());
+            return redirect()->back()->withInput();
+        }
+        
     }
 
     /**
@@ -63,6 +109,40 @@ class TeacherController extends Controller
      */
     public function destroy(Teacher $teacher)
     {
-        //
+        //Course::find($course->id)->delete();
+        //return redirect()->route('courses.index');
+
+        try {
+            $teacher->delete();
+            session()->flash('success', 'Teacher ' . $teacher->title . ' deleted');
+            return redirect()->route('teachers.index');
+        } catch (Exception $e) {
+            session()->flash('failure', $e->getMessage());
+            return redirect()->back();
+        }  
+    }
+
+    public function forceDestroy($id)
+    {
+        try {
+            Teacher::withTrashed()->find($id)->forceDelete();
+            session()->flash('success', 'Teacher record was permanently deleted');
+            return redirect()->route('teachers.index');
+        } catch (Exception $e) {
+            session()->flash('failure', $e->getMessage());
+            return redirect()->back();
+        }
+    }
+
+    public function restore($id)
+    {
+        try {
+            Teacher::withTrashed()->find($id)->restore();
+            session()->flash('success', 'Teacher restored');
+            return redirect()->route('teachers.index');
+        } catch (Exception $e) {
+            session()->flash('failure', $e->getMessage());
+            return redirect()->back();
+        }
     }
 }

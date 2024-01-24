@@ -13,8 +13,12 @@ return new class extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
-            
+            $table->string('id_course');
+            $table->string('name_course');
+            $table->string('abbreviations_course');
+            $table->foreignId('guarantor_course')->references('id')->on('teachers');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -24,5 +28,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('subjects');
+        $table->dropSoftDeletes();
     }
 };

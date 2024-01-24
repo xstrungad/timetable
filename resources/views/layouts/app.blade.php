@@ -12,6 +12,8 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -52,7 +54,7 @@
                         
                         @else
                         
-                        <li class="nav-item"><a class="nav-link" href="{{ route('teachers.index') }}">Subjects</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('subjects.index') }}">Subjects</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('teachers.index') }}">Teachers</a></li>
                         <li class="nav-item nav-link">|</li>
                             <li class="nav-item dropdown">
@@ -80,7 +82,17 @@
 
         <main class="py-4">
             @yield('content')
+            @include('layouts.errors')
         </main>
     </div>
+
+    <script src=https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js></script>
+    <script>
+        new DataTable('#dataTable', {
+            pagingType: 'full_numbers'
+            });
+    </script>
 </body>
 </html>
+{{-- https://code.jquery.com/jquery-3.7.0.js
+https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js --}}
