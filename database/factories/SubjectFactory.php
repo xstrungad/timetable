@@ -17,7 +17,10 @@ class SubjectFactory extends Factory
     public function definition(): array
     {
         return [
-         //
+            'id_course' => fake()->numberBetween(1, 50),
+            'name_course' => fake()->words(2, true),
+            'abbreviations_course' => fake()->regexify('[A-Z]{3}'),
+            'guarantor_course' => fake()->numberBetween(1, 50),
         ];
     }
 }
