@@ -35,5 +35,10 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/subjects/force/{id}', [App\Http\Controllers\SubjectController::class, 'forceDestroy'])->name('subjects.forceDestroy');
     Route::post('/subjects/restore/{id}', [App\Http\Controllers\SubjectController::class, 'restore'])->name('subjects.restore');
 
+    //Operations
+    Route::resource('/operations', App\Http\Controllers\OperationController::class);
+    Route::delete('/operations/force/{id}', [App\Http\Controllers\OperationController::class, 'forceDestroy'])->name('operations.forceDestroy');
+    Route::post('/operations/restore/{id}', [App\Http\Controllers\OperationController::class, 'restore'])->name('operations.restore');
+
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 });
