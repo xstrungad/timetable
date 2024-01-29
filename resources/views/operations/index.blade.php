@@ -10,28 +10,30 @@
                 <th>id</th>
                 <th>course</th>
                 <th>day</th>
-                <th>class_start</th>
-                <th>class_end</th>
+                <th>class start</th>
+                <th>class end</th>
                 <th>room</th>
                 <th>circle</th>
                 <th>year</th>
                 <th>form</th>
                 <th>teacher</th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         </tbody>
             @foreach ($operations as $d)
             <tr>
                 <td>{{$d->id}}</td>
-                <td>{{$d->course}}</td>
+                <td>{{$d->subject->name_course}}</td>
                 <td>{{$d->day}}</td>
                 <td>{{$d->class_start}}</td>
                 <td>{{$d->class_end}}</td>
-                <td>{{$d->room}}</td>
+                <td><a href="{{route('exportPDF')}}" target="_blank">{{$d->room}}</a></td>
                 <td>{{$d->circle}}</td>
                 <td>{{$d->year}}</td>
                 <td>{{$d->form}}</td>
-                <td>{{$d->teacher}}</td>
+                <td>{{$d->teacher->teacher_full_name_reverse}}</td>
                 <td><a class="btn btn-info" href="{{ route('operations.edit', $d->id) }}">Edit</a></td>
                 <td>
                     @if(!$d->trashed())

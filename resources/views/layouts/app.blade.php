@@ -39,6 +39,8 @@
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
                         @guest
+                        <li class="nav-item"><a class="nav-link" href="{{ route('timetable') }}">Timetable</a></li>
+                        <li class="nav-item nav-link">|</li>
                             @if (Route::has('login'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
