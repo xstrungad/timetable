@@ -3,19 +3,21 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     </head>
         
-            {{-- @foreach ($d->operation as $f) --}}
-    <body style="font-family: DejaVu Sans"> List of subjects in the class {{-- {{$d->room}}--}}
-                {{-- @endforeach --}}
+
+    <body style="font-family: DejaVu Sans">
+
+        <h1>{{ __($array['title']) }} {{ $save[$rooms-1] }}</h1>
+
         <table>
             <th>course id</th>
             <th>course name</th>
                     @foreach ($operations as $op)
-                    @foreach ($op->subject as $d)
             <tr>
-                <td>{{$d->id_course}}</td>
-                <td>{{$d->name_course}}</td>
+                @if ($op->room == $save[$rooms-1])
+                    <td>{{$op->subject->id_course}}</td>
+                    <td>{{$op->subject->name_course}}</td>
+                @endif
             </tr>
-            @endforeach
             @endforeach
         </table>
     </body>

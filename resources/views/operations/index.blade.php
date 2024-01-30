@@ -3,7 +3,8 @@
 
 <div class="container">
     <h3 class="mb-5">List of Operations</h3>
-    <p><a href="{{ route('operations.create') }}" class="btn btn-secondary">Add New Operation</a></p>
+    <p><a href="{{ route('operations.create') }}" class="btn btn-secondary">Add New Operation</a>
+        <a href="{{ route('exportXLS') }}" class="btn btn-success">Export of Teacher to Excel</a></p>
     <table class="table table-striped table-hover" id="dataTable">
         <thead>
             <tr>
@@ -29,7 +30,10 @@
                 <td>{{$d->day}}</td>
                 <td>{{$d->class_start}}</td>
                 <td>{{$d->class_end}}</td>
-                <td><a href="{{route('exportPDF')}}" target="_blank">{{$d->room}}</a></td>
+                <td>{!! Form::open(array('route' => ['exportPDF', $d->id], 'method'=>'POST', 'target' => '_blank')) !!}
+                    {{-- {!! Form::submit("{{ $d->room }}", array('class' => 'btn btn-success btn-sm mt-1')) !!} --}}
+                    <button class="btn btn-success btn-sm mt-1" value="{{ $d->room }}">{{ $d->room }}</button>
+                    {!! Form::close() !!}</td>
                 <td>{{$d->circle}}</td>
                 <td>{{$d->year}}</td>
                 <td>{{$d->form}}</td>

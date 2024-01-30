@@ -8,6 +8,7 @@ use App\Models\Teacher;
 use App\Models\Subject;
 use Exception;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Spatie\SimpleExcel\SimpleExcelWriter;
 
 
 class OperationController extends Controller
@@ -189,20 +190,44 @@ class OperationController extends Controller
         }
     }
 
-    public function exportPDF()
+    public function exportPDF($rooms)
     {
         $operations = Operation::with(['subject'])->get(); 
         foreach ($operations as $op){
-            foreach ($op->subject as $d){
-                dd($d);
-            }
-
+                $save[] = $op->room;
         }
 
-        $array = [];
-        $data = compact('operations', 'array');
+        $array = ['title'=>'List of subjects in the room '];
+        $data = compact('operations', 'array', 'rooms', 'save');
         $pdf = Pdf::loadView('pdf.subjects_in_room', $data);
         return $pdf->stream('subjects.pdf');                    //stream, download
+    }
+
+    public function exportXLS()
+    {
+    $teacherCsv = SimpleExcelWriter::streamDownload('timetable_teacher_list.csv');
+    $tt_teachers_list = Operation::with(['teacher'])->distinct()->get();
+
+    $uniqueNames = [];
+
+        foreach ($tt_teachers_list as $tel) {
+            $fullName = $tel->teacher->lastname;
+            $d = $tel->teacher->firstname;
+    
+            $fullNameAndD = $fullName . ' ' . $d;
+    
+            // Check if the combination of full name and first name is already in the array
+            if (!in_array($fullNameAndD, $uniqueNames)) {
+                $uniqueNames[] = $fullNameAndD;
+    
+                $teacherCsv->addRow([
+                    $fullName,
+                    $d
+                ]);
+            }
+            }
+            $teacherCsv->toBrowser();
+
     }
 
     public function timetable()
