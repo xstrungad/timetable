@@ -8,16 +8,19 @@
             {{ Form::open(['route' => 'operations.store']) }}
 
             {{ Form::label('course_id', 'Course id') }}
-            {{ Form::text('course_id', null, array('class' => 'form-control mb-3')) }}
+            {{ Form::select('course_id', $listOfSubjects, null, array('class' => 'form-control mb-3')) }}
 
-            {{ Form::label('day', 'Operation name') }}
-            {{ Form::text('day', null, array('class' => 'form-control mb-3')) }}
+            {{ Form::label('day', 'Day') }}
+            {{ Form::select('day', [0 => '-----', 'Monday' => 'Monday', 'Tuesday' => 'Tuesday', 'Wednesday' => 'Wednesday',
+             'Thursday' => 'Thursday', 'Friday' => 'Friday'], null, array('class' => 'form-control')) }}
 
-            {{ Form::label('class_start', 'class_start') }}
-            {{ Form::text('class_start', null, array('class' => 'form-control mb-3')) }}
+            {{ Form::label('class_start', 'Class start') }}
+            {{ Form::select('class_start', [0 => '-----', 7 => '7', 8 => '8', 9 => '9', 10 => '10', 11 => '11', 12 => '12',
+             13 => '13', 14 => '14', 15 => '15', 16 => '16', 17 => '17', 18 => '18'], null, array('class' => 'form-control')) }}
 
-            {{ Form::label('class_end', 'class_end') }}
-            {{ Form::text('class_end', null, array('class' => 'form-control mb-3')) }}
+            {{ Form::label('class_end', 'Class end') }}
+            {{ Form::select('class_end', [0 => '-----', 8 => '8', 9 => '9', 10 => '10', 11 => '11', 12 => '12',
+            13 => '13', 14 => '14', 15 => '15', 16 => '16', 17 => '17', 18 => '18', 19 => '19'], null, array('class' => 'form-control')) }}
 
             {{ Form::label('room', 'Room') }}
             {{ Form::text('room', null, array('class' => 'form-control mb-3')) }}
@@ -29,7 +32,8 @@
             {{ Form::text('year', null, array('class' => 'form-control mb-3')) }}
 
             {{ Form::label('form', 'Form') }}
-            {{ Form::text('form', null, array('class' => 'form-control mb-3')) }}
+            {{ Form::select('form', [0 => '-----', 'Lecture' => 'Lecture', 'Seminar' => 'Seminar', 'Laboratory exercise' => 'Laboratory exercise', 'Exercise' => 'Exercise',
+             'Project' => 'Project'], null, array('class' => 'form-control')) }}
 
             {{ Form::label('teacher_id', 'Teacher') }}
             {{ Form::select('teacher_id', $listOfTeachers, null, array('class' => 'form-control mb-3')) }}

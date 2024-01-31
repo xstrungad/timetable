@@ -10,7 +10,8 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/timetable.png') }}" />
+    <link rel="dns-prefetch" icon="timetable" href="#">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
@@ -39,6 +40,8 @@
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
                         @guest
+                        <li class="nav-item"><a class="nav-link" href="{{ route('timetable') }}">Timetable</a></li>
+                        <li class="nav-item nav-link">|</li>
                             @if (Route::has('login'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
@@ -53,10 +56,9 @@
                         --}}
                         
                         @else
-                        
+                        <li class="nav-item"><a class="nav-link" href="{{ route('operations.index') }}">Operations</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('subjects.index') }}">Subjects</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('teachers.index') }}">Teachers</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('operations.index') }}">Operations</a></li>
                         <li class="nav-item nav-link">|</li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

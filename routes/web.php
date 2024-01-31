@@ -22,7 +22,7 @@ Route::get('/', function () {
 
 
 
-
+Route::get('/timetable', [App\Http\Controllers\OperationController::class, 'timetable'])->name('timetable');
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () { 
@@ -36,6 +36,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/subjects/restore/{id}', [App\Http\Controllers\SubjectController::class, 'restore'])->name('subjects.restore');
 
     //Operations
+    Route::get('xls/timetable_teachers_list', [App\Http\Controllers\OperationController::class, 'exportXLS'])->name('exportXLS');
+    Route::post('/pdf/subjects_in_room/{rooms}', [App\Http\Controllers\OperationController::class, 'exportPDF'])->name('exportPDF');
+    //Route::get('/exportpdf', [App\Http\Controllers\OperationController::class, 'exportPDF'])->name('exportPDF');
     Route::resource('/operations', App\Http\Controllers\OperationController::class);
     Route::delete('/operations/force/{id}', [App\Http\Controllers\OperationController::class, 'forceDestroy'])->name('operations.forceDestroy');
     Route::post('/operations/restore/{id}', [App\Http\Controllers\OperationController::class, 'restore'])->name('operations.restore');

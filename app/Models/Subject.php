@@ -22,4 +22,8 @@ class Subject extends Model
     public function teacher() {
         return $this->hasOne(Teacher::class, 'id', 'guarantor_course');
     }
+
+    public function operation() {
+        return $this->hasMany(Operation::class, 'course_id');
+    }
 }

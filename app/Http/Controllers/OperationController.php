@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Operation;
 use Illuminate\Http\Request;
+use App\Models\Teacher;
+use App\Models\Subject;
+use Exception;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Spatie\SimpleExcel\SimpleExcelWriter;
+
 
 class OperationController extends Controller
 {
@@ -21,13 +27,19 @@ class OperationController extends Controller
      */
     public function create()
     {
+        $Subjects = Subject::orderBy('name_course', 'asc')->get();
+        $listOfSubjects[0] = '-----';
+        foreach ($Subjects as $Subject) {
+            $listOfSubjects[$Subject->id] = $Subject->name_course;
+        }
+
         $Teachers = Teacher::orderBy('lastname', 'asc')->orderBy('firstname', 'asc')->get();
         $listOfTeachers[0] = '-----';
         foreach ($Teachers as $Teacher) {
             $listOfTeachers[$Teacher->id] = $Teacher->lastname . ' ' . $Teacher->firstname;
         }
 
-        return view('operations.create')->with('listOfTeachers', $listOfTeachers);
+        return view('operations.create')->with('listOfTeachers', $listOfTeachers)->with('listOfSubjects', $listOfSubjects);
     }
 
     /**
@@ -38,8 +50,8 @@ class OperationController extends Controller
         $rules = [
             'course_id'                 => 'required|string',
             'day'                       => 'required|string',
-            'class_start'               => 'required|string',
-            'class_end'                 => 'required|string',
+            'class_start'               => 'required|numeric',
+            'class_end'                 => 'required|numeric',
             'room'                      => 'required|string',
             'circle'                    => 'required|string',
             'year'                      => 'required|string',
@@ -50,11 +62,11 @@ class OperationController extends Controller
         $validated = $request->validate($rules);
         try {
             $d = Operation::create([
-            'course_id'                 => $request['course_id'],
-            'day'                       => $request['day'],
-            'class_start'               => $request['class_start'],
-            'class_end'                 => $request['class_end'],
-            'room'                      => $request['room'],
+            'course_id'             => $request['course_id'],
+            'day'                   => $request['day'],
+            'class_start'           => $request['class_start'],
+            'class_end'             => $request['class_end'],
+            'room'                  => $request['room'],
             'circle'                => $request['circle'],
             'year'                  => $request['year'],
             'form'                  => $request['form'],
@@ -85,11 +97,18 @@ class OperationController extends Controller
     {
         $Teachers = Teacher::orderBy('lastname', 'asc')->orderBy('firstname', 'asc')->get();
         $listOfTeachers[0] = '-----';
-        foreach ($Teachers as $Teacher) {
+        foreach ($Teachers as $Teacher)
+        {
             $listOfTeachers[$Teacher->id] = $Teacher->lastname . ' ' . $Teacher->firstname;
         }
 
-        return view('operations.edit')->with('operation', Operation::find($operation->id))->with('listOfTeachers', $listOfTeachers);
+        $Subjects = Subject::orderBy('name_course', 'asc')->get();
+        $listOfSubjects[0] = '-----';
+        foreach ($Subjects as $Subject) {
+            $listOfSubjects[$Subject->id] = $Subject->name_course;
+        }
+
+        return view('operations.edit')->with('operation', Operation::find($operation->id))->with('listOfTeachers', $listOfTeachers)->with('listOfSubjects', $listOfSubjects);
     }
 
     /**
@@ -100,8 +119,8 @@ class OperationController extends Controller
         $rules = [
             'course_id'                 => 'required|string',
             'day'                       => 'required|string',
-            'class_start'               => 'required|string',
-            'class_end'                 => 'required|string',
+            'class_start'               => 'required|numeric',
+            'class_end'                 => 'required|numeric',
             'room'                      => 'required|string',
             'circle'                    => 'required|string',
             'year'                      => 'required|string',
@@ -169,5 +188,51 @@ class OperationController extends Controller
             session()->flash('failure', $e->getMessage());
             return redirect()->back();
         }
+    }
+
+    public function exportPDF($rooms)
+    {
+        $operations = Operation::with(['subject'])->get(); 
+        foreach ($operations as $op){
+                $save[] = $op->room;
+        }
+
+        $array = ['title'=>'List of subjects in the room '];
+        $data = compact('operations', 'array', 'rooms', 'save');
+        $pdf = Pdf::loadView('pdf.subjects_in_room', $data);
+        return $pdf->stream('subjects.pdf');                    //stream, download
+    }
+
+    public function exportXLS()
+    {
+    $teacherCsv = SimpleExcelWriter::streamDownload('timetable_teacher_list.csv');
+    $tt_teachers_list = Operation::with(['teacher'])->distinct()->get();
+
+    $uniqueNames = [];
+
+        foreach ($tt_teachers_list as $tel) {
+            $fullName = $tel->teacher->lastname;
+            $d = $tel->teacher->firstname;
+    
+            $fullNameAndD = $fullName . ' ' . $d;
+    
+            // Check if the combination of full name and first name is already in the array
+            if (!in_array($fullNameAndD, $uniqueNames)) {
+                $uniqueNames[] = $fullNameAndD;
+    
+                $teacherCsv->addRow([
+                    $fullName,
+                    $d
+                ]);
+            }
+            }
+            $teacherCsv->toBrowser();
+
+    }
+
+    public function timetable()
+    {
+        $operations = Operation::with('teacher', 'subject')->orderBy('id', 'asc')->withTrashed()->get(); 
+        return view('timetable')->with('operations', $operations);
     }
 }
