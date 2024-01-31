@@ -22,7 +22,7 @@
             @foreach ($operations as $d)
             <tr>
                 <td>{{$d->id}}</td>
-                <td>{{$d->subject->name_course}}</td>
+                <td>{{$d->subject->name_course ?? null}}</td>
                 <td>{{$d->day}}</td>
                 <td>{{$d->class_start}}</td>
                 <td>{{$d->class_end}}</td>
@@ -30,7 +30,7 @@
                 <td>{{$d->circle}}</td>
                 <td>{{$d->year}}</td>
                 <td>{{$d->form}}</td>
-                <td>{{$d->teacher->teacher_full_name_reverse}}</td>
+                <td>{{$d->teacher->teacher_full_name_reverse ?? null}}</td>
             </tr>
             @endforeach
         </tbody>    

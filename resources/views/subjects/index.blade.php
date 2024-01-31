@@ -23,7 +23,7 @@
                 <td>{{$d->id_course}}</td>
                 <td>{{$d->name_course}}</td>
                 <td>{{$d->abbreviations_course}}</td>
-                <td>{{$d->teacher->teacher_full_name_reverse}}</td>
+                <td>{{$d->teacher->teacher_full_name_reverse ?? null}}</td>
                 <td><a class="btn btn-info" href="{{ route('subjects.edit', $d->id) }}">Edit</a></td>
                 <td>
                     @if(!$d->trashed())
